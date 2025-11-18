@@ -1,0 +1,17 @@
+Flask==3.0.3
+Flask-SocketIO==5.3.6
+eventlet==0.36.1
+gunicorn==22.0.0
+celery[redis]==5.4.0
+psycopg2-binary==2.9.9
+SQLAlchemy==2.0.35
+python-dotenv==1.0.1
+ultralytics==8.2.94          # YOLOv8
+insightface==0.7.3           # Best accuracy
+onnxruntime-gpu==1.19.2      # or onnxruntime if no GPU
+face-recognition==1.3.0      # fallback
+opencv-python-headless==4.10
+numpy==1.26.4
+google-auth==2.29.0
+google-api-python-client==2.147.0
+redis==5.0.8
