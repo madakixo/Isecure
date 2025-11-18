@@ -2,8 +2,14 @@ from flask import Flask
 from flask_socketio import SocketIO
 import eventlet
 eventlet.monkey_patch()
+from redis import Redis
+import os
 
-socketio = SocketIO(async_mode='eventlet', cors_allowed_origins="*")
+socketio = SocketIO(
+    async_mode='eventlet',
+    cors_allowed_origins="*",
+    message_queue=os.getenv("REDIS_URL", None)  # Enables multi-worker real-time!
+)
 
 def create_app():
     app = Flask(__name__, template_folder="../../pwa/templates", static_folder="../../pwa/static")
