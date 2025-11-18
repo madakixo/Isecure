@@ -1,0 +1,18 @@
+<h1>Welcome {{ current_user.username }}</h1>
+{% if not current_user.is_active %}<p style="color:red">ACCOUNT SUSPENDED OR EXPIRED</p>{% endif %}
+
+<h2>Your Cameras ({{ cameras|length }} / {{ current_user.cameras_allowed }})</h2>
+<form action="/dashboard/add-camera" method="post">
+  <input name="name" placeholder="Camera Name">
+  <input name="ip" placeholder="192.168.1.100">
+  <input name="username" value="admin">
+  <input name="password" type="password">
+  <input name="port" value="554">
+  <button>Add Camera</button>
+</form>
+
+<div class="camera-grid">
+  {% for cam in cameras %}
+    <img src="/stream/{{ cam.id }}" alt="{{ cam.name }}">
+  {% endfor %}
+</div>
