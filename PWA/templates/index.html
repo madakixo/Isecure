@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html manifest="/manifest.json">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SecureEye-NG</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icons/icon-192.png">
+  <style>
+    .camera-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 10px; }
+    img { width: 100%; border: 3px solid #333; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h1>SecureEye-NG - Live Face Recognition</h1>
+  <button onclick="addCamera()">Add Camera</button>
+  <div id="cameras" class="camera-grid"></div>
+
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script>
+    const socket = io();
+    const camerasDiv = document.getElementById('cameras');
+
+    socket.on('frame', (data) => {
+      let img = document.getElementById(data.camera_id);
+      if (!img) {
+        const div = document.createElement('div');
+        img = document.createElement('img');
+        img.id = data.camera_id;
+        div.innerHTML = `<h3>Camera ${data.camera_id}</h3>`;
+        div.appendChild(img);
+        camerasDiv.appendChild(div);
+      }
+      img.src = `data:image/jpeg;base64,${data.image}`;
+    });
+
+    function addCamera() {
+      const rtsp = prompt("Enter RTSP URL:");
+      const id = prompt("Camera ID/Name:");
+      socket.emit('add_camera', {rtsp, id});
+    }
+
+    // PWA install
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      deferredPrompt = e;
+      document.getElementById('installBtn').style.display = 'block';
+    });
+  </script>
+</body>
+</body>
+</html>
